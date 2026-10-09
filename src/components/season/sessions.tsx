@@ -27,6 +27,7 @@ export function StartReadingSheet({ work, open, onClose }: { work: Work | null; 
 
   useEffect(() => {
     if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Reset local state when the external session or dialog changes.
       setEditionId(editions.length === 1 ? editions[0].id : "");
       setStartedOn(todayISO());
       setPrimary(true);
@@ -106,6 +107,7 @@ export function UpdatePlaceSheet({ session, open, onClose }: { session: ReadingS
 
   useEffect(() => {
     if (open && session) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Reset local state when the external session or dialog changes.
       setKind(session.position_kind ?? "page");
       setValue(session.position_value ?? "");
     }
@@ -178,6 +180,7 @@ export function FinishSheet({ session, mode, open, onClose }: { session: Reading
 
   useEffect(() => {
     if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Reset local state when the external session or dialog changes.
       setDate(todayISO());
       setNote(session?.reflection ?? "");
       setStep("status");

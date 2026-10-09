@@ -7,11 +7,7 @@ import { BrandMark } from "@/components/icons";
 import { useApp } from "@/components/providers";
 import { describeError, isConfigured, supabase } from "@/lib/supabase";
 
-/** Only allow redirects back into this app. */
-function safeNext(next: string | null): string {
-  if (!next || !next.startsWith("/") || next.startsWith("//")) return "/";
-  return next;
-}
+import { safeNext } from "@/lib/safe-next";
 
 export default function SignInPage() {
   return (

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import { RequireAuth } from "@/components/app-shell";
@@ -28,7 +29,7 @@ function SeasonRoute() {
     return (
       <main id="main" className="page page-narrow">
         <p className="notice notice-error">This link doesn’t point to a season.</p>
-        <a href="/">Back to your shelf</a>
+        <Link href="/">Back to your shelf</Link>
       </main>
     );
   }

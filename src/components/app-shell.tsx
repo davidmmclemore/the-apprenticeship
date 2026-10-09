@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, type ReactNode } from "react";
+import { Fragment, useEffect, type ReactNode } from "react";
 import { isConfigured } from "@/lib/supabase";
 import { BrandMark } from "./icons";
 import { useApp } from "./providers";
@@ -67,7 +67,7 @@ export function RequireAuth({ children }: { children: ReactNode }) {
       </main>
     );
   }
-  return <>{children}</>;
+  return <Fragment key={user.id}>{children}</Fragment>;
 }
 
 export function Brand() {

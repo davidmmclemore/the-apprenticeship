@@ -37,7 +37,6 @@ export function NotebookTab() {
               type="button"
               role="tab"
               aria-selected={view === v}
-              aria-pressed={view === v}
               onClick={() => go({ view: v === "entries" ? null : v, theme: null, entry: null })}
             >
               {label}
@@ -68,6 +67,7 @@ function EntriesView() {
   useEffect(() => {
     const q = query.trim();
     if (q.length < 2) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Reset local state when the external session or dialog changes.
       setResults(null);
       setSearchOffline(false);
       return;
