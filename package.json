@@ -9,16 +9,29 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@supabase/supabase-js": "2.117.0",
+    "@tiptap/extensions": "3.31.3",
+    "@tiptap/pm": "3.31.3",
+    "@tiptap/react": "3.31.3",
+    "@tiptap/starter-kit": "3.31.3",
+    "dompurify": "3.4.16",
+    "idb": "8.0.3",
     "next": "16.3.8",
     "react": "19.2.8",
     "react-dom": "19.2.8"
   },
   "devDependencies": {
+    "@playwright/test": "1.56.1",
     "@types/node": "^20",
+    "@types/pg": "8.15.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.8",
+    "fake-indexeddb": "6.2.2",
+    "jsdom": "27.0.0",
+    "pg": "8.16.3",
+    "tsx": "4.20.6",
     "typescript": "^5"
   }
 }
