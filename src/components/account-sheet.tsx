@@ -1,11 +1,13 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useApp } from "./providers";
 import { Sheet } from "./ui";
 
 /** Account, installation help, and an honest note about offline behaviour. */
 export function AccountSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
+  const router = useRouter();
   const { user, outbox, signOut, storeError } = useApp();
   const [erase, setErase] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -66,7 +68,7 @@ export function AccountSheet({ open, onClose }: { open: boolean; onClose: () => 
               setBusy(true);
               try {
                 await signOut({ eraseDevice: erase && waiting === 0 });
-                window.location.assign("/sign-in");
+                router.replace("/sign-in");
               } finally {
                 setBusy(false);
               }

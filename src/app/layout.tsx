@@ -24,6 +24,7 @@ export const metadata: Metadata = {
   },
   description: "A season inside an author’s work: where you are, what you notice, what to read next, and what you carry forward.",
   applicationName: "The Apprenticeship",
+  icons: { apple: "/icons/apple-touch-icon.png", icon: "/icons/icon-192.png" },
   appleWebApp: {
     capable: true,
     title: "Apprenticeship",

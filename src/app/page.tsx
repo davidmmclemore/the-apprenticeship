@@ -16,14 +16,14 @@ import { useLoad } from "@/lib/use-load";
 interface ShelfData {
   seasons: Apprenticeship[];
   authors: Author[];
-  current: ReadingSession[];
+  currentSessions: ReadingSession[];
   works: Work[];
 }
 
 async function loadShelf(): Promise<ShelfData> {
   const [seasons, authors, current] = await Promise.all([listSeasons(), listAuthors(), listCurrentSessions()]);
   const works = await listWorksByIds([...new Set(current.map((s) => s.work_id))]);
-  return { seasons, authors, current, works };
+  return { seasons, authors, currentSessions: current, works };
 }
 
 export default function Home() {
@@ -43,7 +43,7 @@ function Shelf() {
     const authorById = new Map(data.authors.map((a) => [a.id, a]));
     const workById = new Map(data.works.map((w) => [w.id, w]));
     const currentBySeason = new Map<string, ReadingSession[]>();
-    for (const s of data.current) currentBySeason.set(s.apprenticeship_id, [...(currentBySeason.get(s.apprenticeship_id) ?? []), s]);
+    for (const s of data.currentSessions) currentBySeason.set(s.apprenticeship_id, [...(currentBySeason.get(s.apprenticeship_id) ?? []), s]);
     const by = (status: Apprenticeship["status"]) => data.seasons.filter((s) => s.status === status);
     return { authorById, workById, currentBySeason, active: by("active"), paused: by("paused"), planned: by("planned"), completed: by("completed"), archived: by("archived") };
   }, [data]);

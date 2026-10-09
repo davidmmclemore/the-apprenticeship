@@ -39,7 +39,7 @@ export function Providers({ children }: { children: ReactNode }) {
 }
 
 function AppProvider({ children }: { children: ReactNode }) {
-  const [ready, setReady] = useState(false);
+  const [ready, setReady] = useState(!isConfigured);
   const [session, setSession] = useState<Session | null>(null);
   const [store, setStore] = useState<DeviceStore | null>(null);
   const [engine, setEngine] = useState<SyncEngine | null>(null);
@@ -51,10 +51,7 @@ function AppProvider({ children }: { children: ReactNode }) {
 
   // Session ---------------------------------------------------------------
   useEffect(() => {
-    if (!isConfigured) {
-      setReady(true);
-      return;
-    }
+    if (!isConfigured) return;
     const client = supabase();
     let cancelled = false;
     client.auth.getSession().then(({ data }) => {
@@ -86,6 +83,7 @@ function AppProvider({ children }: { children: ReactNode }) {
 
   // Device store + sync for exactly the signed-in account -----------------
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Reset local state when the external session or dialog changes.
     setStore(null);
     setEngine(null);
     setOutbox([]);
@@ -151,8 +149,11 @@ function AppProvider({ children }: { children: ReactNode }) {
   );
 
   const value = useMemo<AppState>(
-    () => ({ ready, session, user: session?.user ?? null, store, engine, storeError, outbox, online, signOut }),
-    [ready, session, store, engine, storeError, outbox, online, signOut],
+    () => ({ ready, session, user: session?.user ?? null,
+      store: store?.userId === userId ? store : null,
+      engine: engine?.store.userId === userId ? engine : null,
+      storeError, outbox: store?.userId === userId ? outbox : [], online, signOut }),
+    [ready, session, userId, store, engine, storeError, outbox, online, signOut],
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

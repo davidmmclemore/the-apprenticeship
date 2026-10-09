@@ -91,6 +91,7 @@ export function WorkFormSheet({ open, onClose, work }: { open: boolean; onClose:
 
   useEffect(() => {
     if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Reset local state when the external session or dialog changes.
       setV(work ? fromWork(work) : blankWork);
       setErrors({});
       setAdded([]);
@@ -299,6 +300,7 @@ export function EditionFormSheet({ open, onClose, work, edition }: { open: boole
 
   useEffect(() => {
     if (!open) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Reset edition form when opened.
     setErrors({});
     setV(
       edition

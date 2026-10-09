@@ -18,14 +18,14 @@ export interface LoadState<T> {
  * Load data from the account; remember the last good copy on this device
  * (per account) so the page can still be read offline, clearly labelled.
  */
-export function useLoad<T>(cacheKey: string | null, loader: () => Promise<T>, deps: unknown[] = []): LoadState<T> {
+export function useLoad<T>(cacheKey: string | null, loader: () => Promise<T>): LoadState<T> {
   const { store } = useApp();
   const [data, setDataState] = useState<T | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [offlineCopyFrom, setOfflineCopyFrom] = useState<string | null>(null);
   const loaderRef = useRef(loader);
-  loaderRef.current = loader;
+  useEffect(() => { loaderRef.current = loader; });
   const generation = useRef(0);
   const current = useRef<{ data: T | null; loadedAt: string | null }>({ data: null, loadedAt: null });
 
@@ -33,6 +33,7 @@ export function useLoad<T>(cacheKey: string | null, loader: () => Promise<T>, de
     const gen = ++generation.current;
     setLoading(true);
     try {
+      if (typeof navigator !== "undefined" && !navigator.onLine) throw new Error("Offline");
       const result = await loaderRef.current();
       if (gen !== generation.current) return;
       current.current = { data: result, loadedAt: new Date().toISOString() };
@@ -58,11 +59,15 @@ export function useLoad<T>(cacheKey: string | null, loader: () => Promise<T>, de
     } finally {
       if (gen === generation.current) setLoading(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [store, cacheKey, ...deps]);
+  }, [store, cacheKey]);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- Start the account load when its key or store changes.
     void reload();
+    return () => {
+      // eslint-disable-next-line react-hooks/exhaustive-deps -- This is a request counter, not a DOM ref; invalidate the latest pending request.
+      generation.current++;
+    };
   }, [reload]);
 
   const setData = useCallback((update: (value: T) => T) => {

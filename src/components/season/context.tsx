@@ -68,7 +68,7 @@ export function SeasonProvider({ id, children, fallback }: { id: string; childre
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
-  const { data: b, error, loading, reload, offlineCopyFrom, setData } = useLoad(`season:${id}`, () => loadSeasonBundle(id), [id]);
+  const { data: b, error, loading, reload, offlineCopyFrom, setData } = useLoad(`season:${id}`, () => loadSeasonBundle(id));
 
   // When a waiting note reaches the account, fold the saved copy in.
   useEffect(() => {

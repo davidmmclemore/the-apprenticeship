@@ -113,6 +113,9 @@ export class DeviceStore {
   async putCache(key: string, data: unknown) {
     await this.db.put("cache", { key, data, savedAt: new Date().toISOString() });
   }
+  deleteCache(key: string) {
+    return this.db.delete("cache", key);
+  }
   getCache(key: string) {
     return this.db.get("cache", key);
   }

@@ -36,6 +36,7 @@ export function EntryPane({ entry }: { entry: Entry }) {
   const work = entry.work_id ? workById.get(entry.work_id) : null;
   const localOnly = item?.op === "create";
 
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- Reset local state when the external session or dialog changes.
   useEffect(() => setEditing(false), [entry.id]);
 
   return (

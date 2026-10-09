@@ -85,6 +85,7 @@ export function ConfirmSheet({
   const inputId = useId();
   useEffect(() => {
     if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Reset local state when the external session or dialog changes.
       setTyped("");
       setError(null);
     }
